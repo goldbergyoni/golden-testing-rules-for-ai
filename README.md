@@ -120,6 +120,10 @@ Found a testing anti-pattern that AI tools keep generating? Open an issue or PR!
 
 MIT - Use these rules freely in your projects
 
+## 👨‍💻 About the Author
+
+**Yoni Goldberg** - Developer and consultant with extensive experience in testing excellence. Has worked with over 40 organizations to improve their testing practices. Author of Node.js and JavaScript testing best practices repositories with a combined 103,000+ GitHub stars, helping developers worldwide write better, more maintainable tests.
+
 ---
 
 *Making AI coding assistants write tests like seasoned testing experts, one rule at a time.*
