@@ -1,6 +1,9 @@
 # Golden Testing Rules for AI 🏆
 
-## In 60 seconds, shield your tests from 50+ common mistakes that AI coding tools make
+## Why is it critical?
+As coding shifts toward AI agents, test quality becomes 100x more critical. In 60 seconds, shield your tests from 50+ common mistakes that AI coding tools make
+
+Download one rule file today and watch your project naturally shift toward more reliable, maintainable testing
 
 ### 🎯 What You'll Find Here
 
