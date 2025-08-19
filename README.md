@@ -1,4 +1,4 @@
-# Golden Testing Rules for AI 🏆
+# 💎 Golden Testing Rules for AI
 
 ## Why is it critical?
 As coding shifts toward AI agents, test quality becomes 100x more critical. In 60 seconds, shield your tests from 50+ common mistakes that AI coding tools make
@@ -13,21 +13,24 @@ Download one rule file today and watch your project naturally shift toward more 
 
 ## 🚀 Get Started in 30 Seconds
 
-Choose your AI tool and add the rules to your project:
+Download the testing rules and add them to your AI tool:
 
 ```bash
-# For Claude (Claude Code, claude.ai)
-curl -O https://raw.githubusercontent.com/goldbergyoni/golden-testing-rules-for-ai/main/CLAUDE.md
-mv CLAUDE.md your-project/tests/
-
-# For Cursor
-curl -O https://raw.githubusercontent.com/goldbergyoni/golden-testing-rules-for-ai/main/.cursorrules
-mv .cursorrules your-project/
-
-# For GitHub Copilot
-curl -O https://raw.githubusercontent.com/goldbergyoni/golden-testing-rules-for-ai/main/.github/copilot-instructions.md
-mkdir -p your-project/.github && mv copilot-instructions.md your-project/.github/
+# Download the testing best practices
+curl -O https://raw.githubusercontent.com/goldbergyoni/golden-testing-rules-for-ai/main/testing-best-practices.md
 ```
+
+Or [view and copy the rules directly from GitHub](https://github.com/goldbergyoni/golden-testing-rules-for-ai/blob/main/testing-best-practices.md)
+
+### Integration with your AI tool:
+
+**For Claude Code:**
+- Rename the file to `CLAUDE.md` and place it in your project root
+
+**For Cursor:**
+- Paste the contents into a `.cursorrules` file in your project root
+
+> **Note:** Currently available for TypeScript/JavaScript. Support for more languages and tool-specific formats coming soon!
 
 That's it! Your AI assistant now follows golden testing standards. 🛡️
 
