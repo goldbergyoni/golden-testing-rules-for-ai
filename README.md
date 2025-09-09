@@ -25,7 +25,7 @@ Or [view and copy the rules directly from GitHub](https://github.com/goldbergyon
 ### Integration with your AI tool:
 
 **For Claude Code:**
-- Rename the file to `CLAUDE.md` and place it in your project root
+- Rename the file to `CLAUDE.md` and place it under your testing folder or wherever you use to locate testing best practices
 
 **For Cursor:**
 - Paste the contents into a `.cursorrules` file in your project root
@@ -58,20 +58,16 @@ test('should work correctly', async () => {
 
 ### ✅ With Golden Testing Rules Applied
 ```typescript
-test('When processing order with 2 items, then total reflects sum plus tax', async () => {
+test('When processing order items, then total reflects sum plus tax', async () => {
   // Arrange - all data visible (🔫 Smoking gun principle)
-  const orderItems = [
-    buildOrderItem({ price: 50, quantity: 2 }),
-    buildOrderItem({ price: 25, quantity: 2 })
-  ]
-  const order = buildOrder({ items: orderItems, taxRate: 0.1 })
+  const order1 = buildOrderItem({ price: 50, quantity: 1 })
+  const order2 = buildOrderItem({ price: 25, quantity: 1 })
   
   // Act
-  const result = await processOrder(order)
+  const result = await httpClient.post('/order/process', [order1, order2])
   
   // Assert - clear cause and effect
-  const expectedTotal = (100 + 50) * 1.1  // sum * tax
-  expect(result.total).toBe(expectedTotal)
+  expect(result.total).toBe((order1.price + order2.price) * config.taxRate)
 })
 ```
 
@@ -80,7 +76,7 @@ test('When processing order with 2 items, then total reflects sum plus tax', asy
 Our rules are distilled from decades of testing wisdom:
 
 ### **xUnit Test Patterns** by Gerard Meszaros
-<img src="https://m.media-amazon.com/images/I/51qaIf1qE0L.jpg" width="100" alt="xUnit Test Patterns">
+<img src="https://m.media-amazon.com/images/I/51aohHQXSmL._SY445_SX342_.jpg" width="100" alt="xUnit Test Patterns">
 
 The definitive catalog of test patterns and anti-patterns. Meszaros identifies 400+ patterns that form the foundation of modern testing practices.
 
@@ -102,7 +98,7 @@ Osherove's practical guide teaches the difference between good and bad tests, em
 ### **JavaScript Testing Best Practices** by Yoni Goldberg
 <img src="https://github.com/goldbergyoni/javascript-testing-best-practices/raw/master/assets/jtbp-header-blue.png" width="300" alt="JavaScript Testing Best Practices">
 
-A comprehensive guide with 50+ best practices specifically for JavaScript testing, battle-tested by thousands of developers. [5,000+ ⭐ on GitHub](https://github.com/goldbergyoni/javascript-testing-best-practices)
+A comprehensive guide with 50+ best practices specifically for JavaScript testing, battle-tested by thousands of developers. [25,000+ ⭐ on GitHub](https://github.com/goldbergyoni/javascript-testing-best-practices)
 
 ## 🎓 Why This Matters
 
@@ -125,7 +121,7 @@ MIT - Use these rules freely in your projects
 
 ## 👨‍💻 About the Author
 
-**Yoni Goldberg** - Developer and consultant with extensive experience in testing excellence. Has worked with over 40 organizations to improve their testing practices. Author of Node.js and JavaScript testing best practices repositories with a combined 103,000+ GitHub stars, helping developers worldwide write better, more maintainable tests.
+**Yoni Goldberg** - Developer and consultant with extensive experience in testing excellence. Has worked with over 40 organizations to improve their testing practices. Author of Node.js and JavaScript testing best practices repositories with a combined 130,000+ GitHub stars 🌟, helping developers worldwide write better, more maintainable tests.
 
 ---
 

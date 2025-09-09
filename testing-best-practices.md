@@ -117,16 +117,35 @@ E.3. Use the types of the mocked code to ensure the new altered behavior matches
 Suitable for frameworks like React-testing-library, Playwright, StoryBook, etc
 
 F.1. Important: Use only user-facing locators based on ARIA roles, labels, or accessible names. Avoid using test-id (e.g., .getByTestId), CSS selectors, or any non-ARIA-based locators
-
+Â
 F.3. Do not assume or rely on the page structure or layout. Avoid using positional selectors like nth(i), first() and similar
 
 F.5. Use auto-retriable assertion that have 'await' at the beginning to ensure automatic retrying of the assertion
 
-## Section G - What to Test
+## Section G - Testing with data(base)
 
-G.7. 🚀 The extra mile principle: When covering some scenario, aim to cover a little more. Testing save of item? Use two, not one. Testing for filtering of a grid? Check also for item that should NOT have been shown
+G.3. Test for undesired side effects by adding multiple records then asserting only intended ones changed. Example: `await api.delete('/order/123')` then verify `await api.get('/order/456')` still returns 200
 
-G.10. 🔥 The deliberate fire principle: In each configuration and data, aim for the option that is more likely to lead to failure. For example, when choosing the user role, pick the least privilege one
+G.5. Test response schema for auto-generated fields using type matchers. Example: `expect(response).toMatchObject({ id: expect.any(Number), createdAt: expect.any(String) })`
+
+G.7. Add randomness to unique fields by including both meaningful domain data and also some unique suffix. Example, assuming email is unqiue: `{ email: `user-${faker.string.nanoid(5)}@test.com` }`
+
+G.9. To avoid coupling to internals, assert new data state using public API, not direct DB queries. Example: After `await api.post('/order', newOrder)`, verify with `await api.get('/order/${id}')`
+
+G.12. Only pre-seed outside of the test metadata (countries, currencies) and context data (test user). Create test-specific records in each test. Example: Global seed has countries list, test creates its own orders
+
+G.14. Each test acts on its own records only - never share data between tests. Example: `const myOrder = buildOrder(); await api.post('/order', myOrder)` not `await api.get('/order/shared-id')`
+
+G.18. Test for undesired cascading deletes or updates. Example: Delete parent record, assert child records handle it gracefully (either preserved or cleanly removed per business rules)
+
+
+
+
+## Section I - What to Test
+
+I.7. 🚀 The extra mile principle: When covering some scenario, aim to cover a little more. Testing save of item? Use two, not one. Testing for filtering of a grid? Check also for item that should NOT have been shown
+
+I.10. 🔥 The deliberate fire principle: In each configuration and data, aim for the option that is more likely to lead to failure. For example, when choosing the user role, pick the least privilege one
 
 ## Examples
 
