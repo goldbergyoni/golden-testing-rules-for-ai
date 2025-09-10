@@ -76,27 +76,27 @@ test('When processing order items, then total reflects sum plus tax', async () =
 Our rules are distilled from decades of testing wisdom:
 
 ### **xUnit Test Patterns** by Gerard Meszaros
-<img src="https://m.media-amazon.com/images/I/51aohHQXSmL._SY445_SX342_.jpg" width="100" alt="xUnit Test Patterns">
+<img src="./artifacts/xunit-book.jpg" width="480" alt="xUnit Test Patterns">
 
 The definitive catalog of test patterns and anti-patterns. Meszaros identifies 400+ patterns that form the foundation of modern testing practices.
 
 ### **Growing Object-Oriented Software, Guided by Tests** by Freeman & Pryce
-<img src="https://m.media-amazon.com/images/I/51Apk1MuaXL.jpg" width="100" alt="GOOS">
+<img src="./artifacts/growing-book.jpg" width="480" alt="xUnit Test Patterns">
 
 The GOOS book pioneered the London School of TDD and introduced the concept of testing from the outside-in, focusing on behavior over implementation.
 
 ### **Test Driven Development: By Example** by Kent Beck
-<img src="https://m.media-amazon.com/images/I/51ECVL7KkBL.jpg" width="100" alt="TDD by Example">
+<img src="./artifacts/tdd-book.jpg" width="480" alt="xUnit Test Patterns">
 
 Beck's seminal work introduced TDD to the world, establishing the Red-Green-Refactor cycle and the principle of writing tests first.
 
 ### **The Art of Unit Testing** by Roy Osherove
-<img src="https://m.media-amazon.com/images/I/71Ww3b1TmJL.jpg" width="100" alt="Art of Unit Testing">
+<img src="./artifacts/art-book.jpg" width="480" alt="xUnit Test Patterns">
 
 Osherove's practical guide teaches the difference between good and bad tests, emphasizing maintainability, readability, and trustworthiness.
 
 ### **JavaScript Testing Best Practices** by Yoni Goldberg
-<img src="https://github.com/goldbergyoni/javascript-testing-best-practices/raw/master/assets/jtbp-header-blue.png" width="300" alt="JavaScript Testing Best Practices">
+<img src="https://github.com/goldbergyoni/javascript-testing-best-practices/raw/master/assets/jtbp-header-blue.png" width="480" alt="JavaScript Testing Best Practices">
 
 A comprehensive guide with 50+ best practices specifically for JavaScript testing, battle-tested by thousands of developers. [25,000+ ⭐ on GitHub](https://github.com/goldbergyoni/javascript-testing-best-practices)
 

@@ -108,9 +108,15 @@ D.15. When asserting on an object that has more than 3 fields, grab the expected
 
 ## Section E - Mocking
 
-E.1. Mock only code that goes outside of our code under test or to simulate an event that is needed for the test scenario
+E.1.IMPORTANT: Mock only the code that calls external collaborators outside our test scope (e.g., email service clients, payment gateways). Exception: mocks needed to simulate critical events that cannot be triggered otherwise
 
-E.3. Use the types of the mocked code to ensure the new altered behavior matches the real code schemas
+E.3. Always use the types/interfaces of the mocked code so that when the real implementation changes, the mock fails compilation and forces updates to match the new contract
+
+E.5. Define mocks directly in the test file - either in the test's Arrange phase (if directly affecting the outcome) or in beforeEach (if needed for context). Never hide mocks in external setup files where they mysteriously alter behavior 
+
+E.7. Reset all mocks in beforeEach to ensure a clean slate
+
+E.9. When mocking code that makes HTTP requests with known URLs, prefer network interception (MSW, Nock) over function mocks - this keeps more of the code in the test scope
 
 ## Section F - DOM
 
@@ -122,19 +128,19 @@ F.3. Do not assume or rely on the page structure or layout. Avoid using position
 
 F.5. Use auto-retriable assertion that have 'await' at the beginning to ensure automatic retrying of the assertion
 
-## Section G - Testing with data(base)
+## Section G - Testing with database
 
 G.3. Test for undesired side effects by adding multiple records then asserting only intended ones changed. Example: `await api.delete('/order/123')` then verify `await api.get('/order/456')` still returns 200
 
 G.5. Test response schema for auto-generated fields using type matchers. Example: `expect(response).toMatchObject({ id: expect.any(Number), createdAt: expect.any(String) })`
 
-G.7. Add randomness to unique fields by including both meaningful domain data and also some unique suffix. Example, assuming email is unqiue: `{ email: `user-${faker.string.nanoid(5)}@test.com` }`
+G.7. Add randomness to unique fields by including both meaningful domain data and also a unique suffix. Example, assuming email is unique: `{ email: `${faker.internet.email()}-${faker.string.nanoid(5)}` }`
 
 G.9. To avoid coupling to internals, assert new data state using public API, not direct DB queries. Example: After `await api.post('/order', newOrder)`, verify with `await api.get('/order/${id}')`
 
 G.12. Only pre-seed outside of the test metadata (countries, currencies) and context data (test user). Create test-specific records in each test. Example: Global seed has countries list, test creates its own orders
 
-G.14. Each test acts on its own records only - never share data between tests. Example: `const myOrder = buildOrder(); await api.post('/order', myOrder)` not `await api.get('/order/shared-id')`
+G.14. IMPORTANT: Each test acts on its own records only - never share test data between tests
 
 G.18. Test for undesired cascading deletes or updates. Example: Delete parent record, assert child records handle it gracefully (either preserved or cleanly removed per business rules)
 
