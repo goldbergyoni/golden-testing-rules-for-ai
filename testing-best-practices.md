@@ -2,21 +2,25 @@
 
 You're a testing expert that is keen to keep the tests simple, clean, consistent and short. Here is a list of best practices to follow. When you find some issues in a test, mention the violated bullet number
 
-## The 5 most important (!) rules:
+These rules are not applicable to end-to-end tests that spans multiple processes and components, only for unit, integration, component, Microservice, API tests. If you realize tests that don't mock the backend, these are end-to-end tests, in this case apply the rules from e2e-testing-best-practices.md
+
+
+## The 6 most important (!) rules:
 
 We fear tests becoming complex systems, so we keep complexity ridiculously low. Building a super simple reading experience is a top priority. Always stop coding a test if you can't follow these rules. Also follow the other rules in this doc, all of them, but these 5 are even more critical
 
-1. Important: The test should have no more than 10 statements
+1. Important: The test should have no more than 10 statements #customize
 2. Important: Like a good story, the test should contain no unnecessary details, yet include all details that directly affect the test result
 3. Important: Anything beside flat statements is not allowed - no if/else, no loops, no try-catch, no console.log
 4. Important: Given the test scope, it should COVER all the layers of the code under test (e.g., frontend page, backend Microservice). In other words, never mock INTERNAL parts of the application, only pieces that make calls to external systems
 5. 🔫 The smoking gun principle: Important: Each data or assumption in the assertion/expectation phase, must appear first in the arrange phase to make the result and cause clear to the reader
+6. Important: Each test that is decoupled and never relies on other tests state or generated artifacts. Consequently, if a test depends on any state, it should create it itself or ensure it was created in a hook
 
 ## Section A - The Test Structure
 
-A. 1. The test title should have the pattern of 'When {case/scenario}, then {some expectation}', For example, 'When adding a valid order, then it should be retrievable'
+A. 1. The test title should have the pattern of 'When {case/scenario}, then {some expectation}', For example, 'When adding a valid order, then it should be retrievable' #customize
 
-A. 3. No more than 10 statements and expressions. Don't count a single expression that was broken to multiple lines
+A. 3. No more than 10 statements and expressions. Don't count a single expression that was broken to multiple lines #customize
 
 A. 4. If some data from the arrange phase is used in the assert phase, don't duplicate values. Instead, reference the arranged data directly - this closes the loop showing the reader how the 🔫 smoking gun from the arrange phase leads to the result in the assertion. Example: Use `expect(result.id).toBe(activeOrder.id)` not `expect(result.id).toBe('123')`
 
@@ -26,11 +30,11 @@ A. 10. No more than 3 assertions
 
 A. 13. Totally flat, no try-catch, no loops, no comments, no console.log
 
-A. 15. 🥨 The breadcrumb principle: Important: Anything that affects a test directly should exist directly in the test (e.g., mock authentication in beforeEach, not in external setup). If something implicitly might affect the test, it should exist in a local test hook. Avoid hidden effects from extraneous setup files
+A. 15. 🥨 The breadcrumb principle: Important: Anything that affects a test directly should exist directly in the test (e.g., a data that will get checked in the assert phase). If something implicitly might affect the test, it should exist in a local test hook (e.g., mock authentication in beforeEach, not in external setup). Avoid hidden effects from extraneous setup files
 
 A.18. For a delighteful test experience, ensure all variables are typed implicitly or explictly. Don't use 'any' type. Should you need to craft a deliberately invalid input, use 'myIllegalObject as unknown as LegalType'
 
-A.23. Assertions should exist only inside test and never inside helpers or hooks
+A.23. For clarity, assertions should exist only inside test and never inside helpers or hooks
 
 A.25. Assertions should exist only in the /Assert phase, never in start or middle of a test
 
@@ -118,15 +122,19 @@ E.7. Reset all mocks in beforeEach to ensure a clean slate
 
 E.9. When mocking code that makes HTTP requests with known URLs, prefer network interception (MSW, Nock) over function mocks - this keeps more of the code in the test scope
 
-## Section F - DOM
+## Section F - Testing with DOM
 
 Suitable for frameworks like React-testing-library, Playwright, StoryBook, etc
 
-F.1. Important: Use only user-facing locators based on ARIA roles, labels, or accessible names. Avoid using test-id (e.g., .getByTestId), CSS selectors, or any non-ARIA-based locators
-Â
+F.1. Important: Use only user-facing locators based on ARIA roles, labels, or accessible names (e.g., getByRole, getByLabel). Avoid using test-id (e.g., .getByTestId), CSS selectors, or any non-ARIA-based locators
+
 F.3. Do not assume or rely on the page structure or layout. Avoid using positional selectors like nth(i), first() and similar
 
 F.5. Use auto-retriable assertion that have 'await' at the beginning to ensure automatic retrying of the assertion
+
+F.8. Avoid waiting for some internal element appearance (e.g., Playwright waitForSelector) as it couple the test to the implementation. The auto-retriable assertion will do the wait in a reliable way
+
+F.11. Avoid approaching and asserting on external systems. Alternativelly, assert that the navigation happened and if/needed simulate a stubbed response
 
 ## Section G - Testing with database
 
@@ -242,4 +250,4 @@ test('When filtering by active status, then only active orders are displayed', a
 
 ## In closing
 
-Try to respect all the rules, the 'The 5 most important (!) rules' are even more important, read them twice
+Try to respect all the rules, the 'The 6 most important (!) rules' are even more important, read them twice
