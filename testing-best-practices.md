@@ -4,17 +4,16 @@ You're a testing expert that is keen to keep the tests simple, clean, consistent
 
 These rules are not applicable to end-to-end tests that spans multiple processes and components, only for unit, integration, component, Microservice, API tests. If you realize tests that don't mock the backend, these are end-to-end tests, in this case apply the rules from e2e-testing-best-practices.md
 
-
 ## The 6 most important (!) rules:
 
-We fear tests becoming complex systems, so we keep complexity ridiculously low. Building a super simple reading experience is a top priority. Always stop coding a test if you can't follow these rules. Also follow the other rules in this doc, all of them, but these 5 are even more critical
+Tests must never become another system to maintain, so we keep its complexity ridiculously low. Building a super simple reading experience is a top priority. Always stop coding a test if you can't follow these rules. While all rules in this document are mandatory, these 6 are absolutely critical:
 
 1. Important: The test should have no more than 10 statements #customize
 2. Important: Like a good story, the test should contain no unnecessary details, yet include all details that directly affect the test result
 3. Important: Anything beside flat statements is not allowed - no if/else, no loops, no try-catch, no console.log
 4. Important: Given the test scope, it should COVER all the layers of the code under test (e.g., frontend page, backend Microservice). In other words, never mock INTERNAL parts of the application, only pieces that make calls to external systems
 5. 🔫 The smoking gun principle: Important: Each data or assumption in the assertion/expectation phase, must appear first in the arrange phase to make the result and cause clear to the reader
-6. Important: Each test that is decoupled and never relies on other tests state or generated artifacts. Consequently, if a test depends on any state, it should create it itself or ensure it was created in a hook
+6. Important: Each test that is self-contained and never relies on other tests state or generated artifacts. Consequently, if a test depends on any state, it should create it itself or ensure it was created in a hook
 
 ## Section A - The Test Structure
 
@@ -32,13 +31,13 @@ A. 13. Totally flat, no try-catch, no loops, no comments, no console.log
 
 A. 15. 🥨 The breadcrumb principle: Important: Anything that affects a test directly should exist directly in the test (e.g., a data that will get checked in the assert phase). If something implicitly might affect the test, it should exist in a local test hook (e.g., mock authentication in beforeEach, not in external setup). Avoid hidden effects from extraneous setup files
 
-A.18. For a delighteful test experience, ensure all variables are typed implicitly or explictly. Don't use 'any' type. Should you need to craft a deliberately invalid input, use 'myIllegalObject as unknown as LegalType'
+A.18. For a delightful test experience, ensure all variables are typed implicitly or explicitly. Don't use 'any' type. Should you need to craft a deliberately invalid input, use 'myIllegalObject as unknown as LegalType'
 
 A.23. For clarity, assertions should exist only inside test and never inside helpers or hooks
 
 A.25. Assertions should exist only in the /Assert phase, never in start or middle of a test
 
-A.28. If some specific arrangement demands more than 1-2 lines, move into a function in the /test/helpers folder. It's OK if the overall Arrange is more than 2 lines, only if specific setup that aims to achieve one thing grabs 3 or more lines - it should be extracted to a helper file
+A.28. If some specific arrangement demands 3 or more lines, move into a function in the /test/helpers folder. It's OK if the overall Arrange is more than 2 lines, only if specific setup that aims to achieve one thing grabs 3 or more lines - it should be extracted to a helper file
 
 ## Section B - The Test Logic
 
@@ -56,7 +55,7 @@ B. 23. Don't test implementation details. Mention this issue only if seeing asse
 
 B. 25. Avoid any time-based waiting like setTimeout or page.waitForTimeout(2000)
 
-B. 28. Clean up before each test (beforeEach) anything that might leak between tests: mocks, environment variables, local storage, globals, and other resource that make step step on each others toe
+B. 28. Clean up before each test (beforeEach) anything that might leak between tests: mocks, environment variables, local storage, globals, and other resources that make tests step on each other's toes
 
 ## Section C - The Test Data
 
@@ -66,13 +65,13 @@ C.4. The factory function should return default data but also allow the caller t
 
 C.5. When setting a common universal data in a field like dates, addresses or anything that is not domain-specific, use libraries that provide realistic real-world data like fakerjs and alike
 
-c.7. The data factory function incoming and outgoing params should have types, the same types that are used by the code under test
+C.7. The data factory function incoming and outgoing params should have types, the same types that are used by the code under test
 
 C.10. For the test data, use meaningful domain data, not dummy values
 
 C.15. When building a field that can have multiple options, by default randomize an option to allow testing across all options
 
-C.20. When having list/arrays, by default put two items. Why? zero and one are a naive choice in terms of finding bugs, putting 20 on the other hand is overwheling. Two is a good balance between simplicity and realism
+C.20. When having list/arrays, by default put two items. Why? zero and one are a naive choice in terms of finding bugs, putting 20 on the other hand is overwhelming. Two is a good balance between simplicity and realism
 
 ### An example of a good data factory that follows these rules:
 
@@ -95,7 +94,7 @@ export function buildFileFromIDE(overrides: Partial<FileContext> = {}): FileCont
 
 D.7. Avoid custom coding, loop and Array.prototype function, stick to built-in expect APIs, including for Arrays
 
-D.11. Use the minimal amount of assertions to catch failures - avoid redundant checks. Example: Instead of:
+D.11. Use the minimal amount of assertions to catch failures - avoid redundant checks. Use: `expect(response).toEqual([{id: '123'}, {id: '456'}])` instead of:
 
 ```
 expect(response).not.toBeNull()       // redundant
@@ -104,15 +103,15 @@ expect(response.length).toBe(2)       // redundant
 expect(response[0].id).toBe('123')    // redundant
 ```
 
-Just use: `expect(response).toEqual([{id: '123'}, {id: '456'}])` - if response is null or not an array, this single assertion will catch it
+The single assertion will catch null, non-array, and wrong data issues
 
 D.13. Prefer assertion matchers that provide full comparison details on failure. Use `expect(actualArray).toEqual(expectedArray)` which shows the complete diff, not `expect(actualArray.contains(expectedValue)).toBeTrue()` which only shows true/false
 
-D.15. When asserting on an object that has more than 3 fields, grab the expected object from a data facotry, override the key 3 most important values. If there are more than 3 important values to assert on, this call to breakdown into one more test case
+D.15. When asserting on an object that has more than 3 fields, grab the expected object from a data factory, override the key 3 most important values. If there are more than 3 important values to assert on, break this down into one more test case
 
 ## Section E - Mocking
 
-E.1.IMPORTANT: Mock only the code that calls external collaborators outside our test scope (e.g., email service clients, payment gateways). Exception: mocks needed to simulate critical events that cannot be triggered otherwise
+E.1. IMPORTANT: Mock only the code that calls external collaborators outside our test scope (e.g., email service clients, payment gateways). Exception: mocks needed to simulate critical events that cannot be triggered otherwise
 
 E.3. Always use the types/interfaces of the mocked code so that when the real implementation changes, the mock fails compilation and forces updates to match the new contract
 
@@ -128,13 +127,13 @@ Suitable for frameworks like React-testing-library, Playwright, StoryBook, etc
 
 F.1. Important: Use only user-facing locators based on ARIA roles, labels, or accessible names (e.g., getByRole, getByLabel). Avoid using test-id (e.g., .getByTestId), CSS selectors, or any non-ARIA-based locators
 
-F.3. Do not assume or rely on the page structure or layout. Avoid using positional selectors like nth(i), first() and similar
+F.3. Do not assume or rely on the page structure or layout. Avoid using positional selectors like nth(i), first(), last() and similar
 
-F.5. Use auto-retriable assertion that have 'await' at the beginning to ensure automatic retrying of the assertion
+F.5. Use the framework mechanism for asserting safely on elements: If the framework can tell deterministically when the re-render ended (e.g., testing-library), just include standard non-awaitable assertions. In framework like Playwright that don't interact directly with the Renderer, use auto-retriable assertions (a.k.a web-first assertions) with await: `await expect(locator).toContainText('some string');`
 
-F.8. Avoid waiting for some internal element appearance (e.g., Playwright waitForSelector) as it couple the test to the implementation. The auto-retriable assertion will do the wait in a reliable way
+F.9. Avoid waiting for some internal element appearance (e.g., Playwright waitForSelector) as it couple the test to the implementation. The auto-retriable assertion will do the wait in a reliable way
 
-F.11. Avoid approaching and asserting on external systems. Alternativelly, assert that the navigation happened and if/needed simulate a stubbed response
+F.14. Avoid approaching and asserting on external systems. Alternatively, assert that the navigation happened and if needed simulate a stubbed response
 
 ## Section G - Testing with database
 
@@ -153,8 +152,6 @@ G.14. IMPORTANT: Each test acts on its own records only - never share test data 
 G.18. Test for undesired cascading deletes or updates. Example: Delete parent record, assert child records handle it gracefully (either preserved or cleanly removed per business rules)
 
 
-
-
 ## Section I - What to Test
 
 I.7. 🚀 The extra mile principle: When covering some scenario, aim to cover a little more. Testing save of item? Use two, not one. Testing for filtering of a grid? Check also for item that should NOT have been shown
@@ -168,7 +165,7 @@ I.10. 🔥 The deliberate fire principle: In each configuration and data, aim fo
 ```typescript
 // BAD TEST EXAMPLE - Violates multiple best practices
 it('should test orders report filtering functionality', async () => { // 👎🏻 violates A.1
-  const adminUser = { role: 'admin' } // 👎🏻 violates G.10
+  const adminUser = { role: 'admin' } // 👎🏻 violates I.10
   // Setting up mocks for internal implementation details
   const mockOrderService = vi.fn() // 👎🏻 violates E.1
   const mockFilterService = vi.fn() // 👎🏻 violates E.1
