@@ -13,7 +13,7 @@ Download one rule file today and watch your project naturally shift toward more 
 
 ## 🚀 Get Started in 30 Seconds
 
-**Use this for standard testing like integration, component, or unit tests (e.g., Vitest, Playwright, Storybook, testing library, Jest, Node.js test runner):**
+**A. Use this option for standard testing like integration, component, or unit tests (e.g., Vitest, Playwright, Storybook, testing library, Jest, Node.js test runner):**
 
 ```bash
 # Download the testing best practices
@@ -22,7 +22,7 @@ curl -O https://raw.githubusercontent.com/goldbergyoni/golden-testing-rules-for-
 
 Or [view and copy the rules directly from GitHub](https://github.com/goldbergyoni/golden-testing-rules-for-ai/blob/main/testing-best-practices.md)
 
-**Use this for the sole purpose of system-wide end-to-end tests (e.g., Playwright/Cypress without a mocked backend):**
+**B. Use this option for the sole purpose of system-wide end-to-end tests (e.g., Playwright/Cypress without a mocked backend):**
 
 ```bash
 # Download the end-to-end testing best practices
@@ -31,7 +31,7 @@ curl -O https://raw.githubusercontent.com/goldbergyoni/golden-testing-rules-for-
 
 Or [view the E2E rules directly from GitHub](https://github.com/goldbergyoni/golden-testing-rules-for-ai/blob/main/e2e-testing-best-practices.md)
 
-These tests span multiple processes and components, making them more complex and slower than isolated tests. Due to their distributed nature, they require relaxed readability standards and different test data approaches
+Why system-wide E2E testing has different rules? These tests span multiple processes and components, making them more complex and slower than isolated tests. Due to their distributed nature, they require relaxed readability standards and different test data approaches
 
 ### Integration with your AI tool:
 
