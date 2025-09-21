@@ -4,7 +4,7 @@ IMPORTANT: Apply these rules exclusively to system-wide end-to-end tests that sp
 
 ## Best Practices
 
-A.5. The test name should summarize the test flow in a short sentence. It should also describe a stakeholder, an action, and some expectations. For example, 'The user can purchase an item, receive an email and then a supply request was created'
+A.5. The test title should havesummarize the test flow in a short sentence. It should also describe a stakeholder, an action, and some expectations. For example, 'The user can purchase an item and post-purchase experience is valid'
 
 A.8. Important: Each test that is self-contained and never relies on other tests state or generated artifacts. Consequently, if a test depends on any state, it should create it itself or ensure it was created in a hook
 
@@ -93,7 +93,7 @@ test('Should purchase item', async ({ page }) => { // 👎🏻 violates A.5 (vag
 📝 Note: While this test below is considered a good system-wide, end to end test, these patterns are not adequate for inegration and unit tests - practices for these type of tests are described in the document @testing-best-practices.md
 
 ```typescript
-test('Checkout flow', async ({ page }) => {
+test('The user can purchase an item and post-purchase experience is valid', async ({ page }) => {
   const customer = await saveNewCustomer(customer)
   const product = await saveNewProduct(product)
   await navigateToProductsPage(page)
